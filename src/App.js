@@ -7,9 +7,20 @@ class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      text: '',
-      answer: null
+      answer: null,
+      question: '',
+      text: ''
     }
+  }
+
+
+  handleChangeText = (event) => {
+    this.setState({text: event.target.value});
+  }
+
+  handleSubmit = (event) => {
+    alert('A text was submitted: ' + this.state.text);
+    event.preventDefault();
   }
 
   render () {
@@ -22,6 +33,12 @@ class App extends Component {
         <p className='App-intro'>
           Please insert a text and ask a question
         </p>
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <textarea rows={20} cols={80} placeholder={"Please enter a text"} value={this.state.text} onChange={this.handleChangeText} />
+          </div>
+        <input type="submit" value="Submit" />
+      </form>
         <Highlighter text={this.state.text} highlightedText={this.state.answer} />
       </div>
     )
