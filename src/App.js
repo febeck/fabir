@@ -77,6 +77,7 @@ class App extends Component {
               ? <TextField
                   floatingLabelText="Text"
                   hintText="Please enter the text"
+                  value={this.state.text}
                   fullWidth
                   multiLine
                   onChange={this.handleChangeText}
@@ -91,6 +92,7 @@ class App extends Component {
             <TextField
               floatingLabelText="Question"
               hintText="Please ask a question"
+              value={this.state.question}
               fullWidth
               onChange={this.handleChangeQuestion}
               onKeyPress={this.handleKeyPressed}
