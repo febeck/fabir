@@ -30,6 +30,10 @@ class App extends Component {
     }
   }
 
+  togglePreview = () => {
+    this.setState({canEdit: true})
+  }
+
   handleSubmit = () => {
     alert('A text was submitted: ' + this.state.text);
   }
@@ -61,9 +65,13 @@ class App extends Component {
               primary={true}
               label= {'Search'}
               onClick={this.handleSubmit}
-              style={{margin: 12}} />              
+              style={{margin: 12}} />
+
+            <Highlighter
+              text={this.state.text}
+              highlightedText={this.state.answer}
+              onClick={this.togglePreview}/>
           </div>
-          <Highlighter text={this.state.text} highlightedText={this.state.answer} />
         </div>
       </MuiThemeProvider>
     )

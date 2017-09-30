@@ -1,33 +1,27 @@
 import React, { Component } from 'react'
+import Paper from 'material-ui/Paper'
 import './Highlighter.css'
 
 
 class Highlighter extends Component {
-  constructor (props) {
-    super(props)
-    let chuncks = props.text.split(props.highlightedText)
-    this.state = {
-      startChunck: chuncks[0],
-      highlightedChunck: props.highlightedText,
-      endChunck: chuncks[1],
-    }
-  }
 
   renderHighlighted = (text) => {
-    return <span className="highlighted">{text}</span>
+    return <a onClick={this.props.onClick} className="highlighted">{text}</a>
   }
 
   renderUnhighlighted = (text) => {
-    return <span className="unhighlighted">{text}</span>
+    return <a onClick={this.props.onClick} className="unhighlighted">{text}</a>
   }
 
   render () {
+    const {highlightedText, text} = this.props
+    const [startChunck, endChunck] = text.split(highlightedText)
     return (
-      <div>
-        {this.renderUnhighlighted(this.state.startChunck)}
-        {this.renderHighlighted(this.state.highlightedChunck)}
-        {this.renderUnhighlighted(this.state.endChunck)}
-      </div>
+      <Paper zDepth={2} style={{padding: 20}}>
+        {this.renderUnhighlighted(startChunck)}
+        {this.renderHighlighted(highlightedText)}
+        {this.renderUnhighlighted(endChunck)}
+      </Paper>
     )
   }
 }

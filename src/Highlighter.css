@@ -1,7 +1,7 @@
 .highlighted {
-  color: red;
+  background-color: #FFD000;
 }
 
 .unhighlighted {
-  color: blue;
+  color: rgb(105, 105, 105);
 }
