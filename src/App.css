@@ -18,8 +18,8 @@
   font-size: 1.5em;
 }
 
-.App-intro {
-  font-size: large;
+.App-body {
+  padding: 70px;
 }
 
 @keyframes App-logo-spin {

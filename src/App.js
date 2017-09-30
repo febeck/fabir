@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
 import Highlighter from './Highlighter'
 
 class App extends Component {
@@ -14,14 +16,22 @@ class App extends Component {
     }
   }
 
-
   handleChangeText = (event) => {
     this.setState({text: event.target.value});
   }
 
-  handleSubmit = (event) => {
+  handleChangeQuestion = (event) => {
+    this.setState({question: event.target.value});
+  }
+
+  handleKeyPressed = (e) => {
+    if (e.charCode === 13) {
+      this.handleSubmit()
+    }
+  }
+
+  handleSubmit = () => {
     alert('A text was submitted: ' + this.state.text);
-    event.preventDefault();
   }
 
   render () {
@@ -32,15 +42,27 @@ class App extends Component {
             <img src={logo} className='App-logo' alt='logo' />
             <h1 className='App-title'>Welcome to FABIR</h1>
           </header>
-          <p className='App-intro'>
-            Please insert a text and ask a question
-          </p>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <textarea rows={20} cols={80} placeholder={"Please enter a text"} value={this.state.text} onChange={this.handleChangeText} />
-            </div>
-          <input type="submit" value="Submit" />
-        </form>
+          <div className='App-body'>
+            <TextField
+              floatingLabelText="Text"
+              hintText="Please enter the text"
+              fullWidth
+              multiLine
+              onChange={this.handleChangeText} />
+
+            <TextField
+              floatingLabelText="Question"
+              hintText="Please ask a question"
+              fullWidth
+              onChange={this.handleChangeQuestion}
+              onKeyPress={this.handleKeyPressed} />
+
+            <RaisedButton
+              primary={true}
+              label= {'Search'}
+              onClick={this.handleSubmit}
+              style={{margin: 12}} />              
+          </div>
           <Highlighter text={this.state.text} highlightedText={this.state.answer} />
         </div>
       </MuiThemeProvider>
