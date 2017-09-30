@@ -11,6 +11,7 @@ class App extends Component {
     super(props)
     this.state = {
       answer: null,
+      canEdit: true,
       question: '',
       text: ''
     }
@@ -47,12 +48,21 @@ class App extends Component {
             <h1 className='App-title'>Welcome to FABIR</h1>
           </header>
           <div className='App-body'>
-            <TextField
-              floatingLabelText="Text"
-              hintText="Please enter the text"
-              fullWidth
-              multiLine
-              onChange={this.handleChangeText} />
+
+            {this.state.canEdit
+              ?
+                <TextField
+                floatingLabelText="Text"
+                hintText="Please enter the text"
+                fullWidth
+                multiLine
+                onChange={this.handleChangeText} />
+              :
+                <Highlighter
+                text={this.state.text}
+                highlightedText={this.state.answer}
+                onClick={this.togglePreview}/>
+            }
 
             <TextField
               floatingLabelText="Question"
@@ -67,10 +77,6 @@ class App extends Component {
               onClick={this.handleSubmit}
               style={{margin: 12}} />
 
-            <Highlighter
-              text={this.state.text}
-              highlightedText={this.state.answer}
-              onClick={this.togglePreview}/>
           </div>
         </div>
       </MuiThemeProvider>
