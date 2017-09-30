@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import axios from 'axios'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
+import CircularProgress from 'material-ui/CircularProgress';
 import Highlighter from './Highlighter'
 
 class App extends Component {
@@ -12,6 +14,8 @@ class App extends Component {
     this.state = {
       answer: null,
       canEdit: true,
+      hasError: false,
+      isLoading: false,
       question: '',
       text: ''
     }
@@ -36,7 +40,27 @@ class App extends Component {
   }
 
   handleSubmit = () => {
-    alert('A text was submitted: ' + this.state.text);
+    this.setState({
+      canEdit: false,
+      isLoading: true,
+      answer: null
+    })
+    axios.post('/xxxxx', {
+      text: this.state.text,
+      question: this.state.question
+    })
+    .then(response => {
+      this.setState({
+        isLoading: false,
+        answer: response.data
+      })
+    })
+    .catch(error => {
+      this.setState({
+        isLoading: false,
+        hasError: true
+      })
+    });
   }
 
   render () {
@@ -50,18 +74,18 @@ class App extends Component {
           <div className='App-body'>
 
             {this.state.canEdit
-              ?
-                <TextField
-                floatingLabelText="Text"
-                hintText="Please enter the text"
-                fullWidth
-                multiLine
-                onChange={this.handleChangeText} />
-              :
-                <Highlighter
-                text={this.state.text}
-                highlightedText={this.state.answer}
-                onClick={this.togglePreview}/>
+              ? <TextField
+                  floatingLabelText="Text"
+                  hintText="Please enter the text"
+                  fullWidth
+                  multiLine
+                  onChange={this.handleChangeText}
+                  disabled={this.state.isLoading}/>
+              : <Highlighter
+                  text={this.state.text}
+                  hasError={this.state.hasError}
+                  highlightedText={this.state.answer}
+                  onClick={this.togglePreview}/>
             }
 
             <TextField
@@ -69,14 +93,17 @@ class App extends Component {
               hintText="Please ask a question"
               fullWidth
               onChange={this.handleChangeQuestion}
-              onKeyPress={this.handleKeyPressed} />
+              onKeyPress={this.handleKeyPressed}
+              disabled={this.state.isLoading}/>
 
-            <RaisedButton
-              primary={true}
-              label= {'Search'}
-              onClick={this.handleSubmit}
-              style={{margin: 12}} />
-
+            {this.state.isLoading
+              ? <CircularProgress size={30} style={{margin: 12}}/>
+              : <RaisedButton
+                primary={true}
+                label= {'Search'}
+                onClick={this.handleSubmit}
+                style={{margin: 12}} />
+            }
           </div>
         </div>
       </MuiThemeProvider>
